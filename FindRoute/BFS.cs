@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace FindRoute
 {
@@ -10,22 +11,27 @@ namespace FindRoute
         private int x { get; set; }
         private int y { get; set; }
         private Queue<RouteTree> _queue { get; set; }
+        public int queueOperation { get; set; }
+        public int NodeVisited { get; set; }
         public BFS()
         {
             Base = new RouteTree();
             Base.x = SearchBases.Source[0];
             Base.y = SearchBases.Source[1];
             _queue = new Queue<RouteTree>();
+            NodeVisited = 0;
+            queueOperation = 0;
         }
-        public void FindWay()
+        public int FindWay()
         {
             RouteTree Node = Base;
-            //bool Isfinish = false;
-
             _queue.Enqueue(Node);
 
-            while (!AlgorithmBase.ProblemSolved(Node.x, Node.y) && _queue.Count > 0)
+            int i = 0;            
+
+            while (!AlgorithmBase.ProblemSolved(Node.x, Node.y) && _queue.Count >= 0)
             {
+                NodeVisited += 4;
                 if (SearchBases.map[Node.x - 1][Node.y] == ' ' && Node.Top == null) //top
                 {
                     Node.Top = new RouteTree()
@@ -87,8 +93,19 @@ namespace FindRoute
                     _queue.Enqueue(Node.Left);
                 }
                 Node = _queue.Dequeue();
-            }            
-            this.ShowWay(Node);
+                queueOperation++;
+                Thread.Sleep(20);
+                i++;
+            }
+            if(AlgorithmBase.ProblemSolved(Node.x, Node.y))
+                this.ShowWay(Node);
+            else
+            {
+                Console.SetCursorPosition(0, 22);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t\t\tWAY NOT FOUND");
+            }
+            return i;
         }
         public void ShowWay(RouteTree Node)
         {
@@ -98,10 +115,12 @@ namespace FindRoute
 
             while (Node.PrevNode.PrevNode != null)
             {
+                NodeVisited++;
                 Node = Node.PrevNode;
                 SearchBases.map[Node.x][Node.y] = 'o';
                 Console.SetCursorPosition(Node.y, Node.x);
-                Console.Write("o");                
+                Console.Write("o");
+                queueOperation++;
             }
         }
     }

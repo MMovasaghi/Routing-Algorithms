@@ -6,7 +6,8 @@ namespace FindRoute
 {
     static class SearchBases
     {
-        public static char[][] map =
+        public static char[][] map;
+        public static char[][] map2 = 
                               { "############################################################0".ToCharArray(),
                                 "#                                                          #1".ToCharArray(),
                                 "# ############# ######## #####################   #######  ##2".ToCharArray(),
@@ -28,30 +29,130 @@ namespace FindRoute
                                 "# #####                                                    #8".ToCharArray(),
                                 "############################################################9".ToCharArray(),
                                 "012345678901234567890123456789012345678901234567890123456780 ".ToCharArray(),};
+        public static char[][] map1 =
+                              { "############################################################0".ToCharArray(),
+                                "#                                                          #1".ToCharArray(),
+                                "#                                                          #2".ToCharArray(),
+                                "#                                                          #3".ToCharArray(),
+                                "#                                                          #4".ToCharArray(),
+                                "#                                                          #5".ToCharArray(),
+                                "#                                                          #6".ToCharArray(),
+                                "#                                                          #7".ToCharArray(),
+                                "#                                                          #8".ToCharArray(),
+                                "#                                                          #9".ToCharArray(),
+                                "#                                                          #0".ToCharArray(),
+                                "#                                                          #1".ToCharArray(),
+                                "#                                                          #2".ToCharArray(),
+                                "#                                                          #3".ToCharArray(),
+                                "#                                                          #4".ToCharArray(),
+                                "#                                                          #5".ToCharArray(),
+                                "#                                                          #6".ToCharArray(),
+                                "#                                                          #7".ToCharArray(),
+                                "#                                                          #8".ToCharArray(),
+                                "############################################################9".ToCharArray(),
+                                "012345678901234567890123456789012345678901234567890123456780 ".ToCharArray(),};
+        public static char[][] map3 =
+                              { "############################################################0".ToCharArray(),
+                                "#                                                          #1".ToCharArray(),
+                                "#                                                          #2".ToCharArray(),
+                                "#              ##           ##       ######                #3".ToCharArray(),
+                                "#              ##           ##         ##                  #4".ToCharArray(),
+                                "#              ##           ##         ##                  #5".ToCharArray(),
+                                "#              ##           ##         ##                  #6".ToCharArray(),
+                                "#              ##           ##         ##                  #7".ToCharArray(),
+                                "#              ##           ##         ##                  #8".ToCharArray(),
+                                "#              ###############         ##                  #9".ToCharArray(),
+                                "#              ##           ##         ##                  #0".ToCharArray(),
+                                "#              ##           ##         ##                  #1".ToCharArray(),
+                                "#              ##           ##         ##                  #2".ToCharArray(),
+                                "#              ##           ##         ##                  #3".ToCharArray(),
+                                "#              ##           ##         ##                  #4".ToCharArray(),
+                                "#              ##           ##       ######                #5".ToCharArray(),
+                                "#                                                          #6".ToCharArray(),
+                                "#                                                          #7".ToCharArray(),
+                                "#                                                          #8".ToCharArray(),
+                                "############################################################9".ToCharArray(),
+                                "012345678901234567890123456789012345678901234567890123456780 ".ToCharArray(),};
+        public static char[][] map4 =
+                              { "############################################################0".ToCharArray(),
+                                "#                                                          #1".ToCharArray(),
+                                "#                                                          #2".ToCharArray(),
+                                "#                                                          #3".ToCharArray(),
+                                "#                                                          #4".ToCharArray(),
+                                "#               ############################               #5".ToCharArray(),
+                                "#               #                          #               #6".ToCharArray(),
+                                "#               #                          #               #7".ToCharArray(),
+                                "#               #                          #               #8".ToCharArray(),
+                                "#               #                          #               #9".ToCharArray(),
+                                "#               #                          #               #0".ToCharArray(),
+                                "#               #                          #               #1".ToCharArray(),
+                                "#               #                          #               #2".ToCharArray(),
+                                "#               ############################               #3".ToCharArray(),
+                                "#                                                          #4".ToCharArray(),
+                                "#                                                          #5".ToCharArray(),
+                                "#                                                          #6".ToCharArray(),
+                                "#                                                          #7".ToCharArray(),
+                                "#                                                          #8".ToCharArray(),
+                                "############################################################9".ToCharArray(),
+                                "012345678901234567890123456789012345678901234567890123456780 ".ToCharArray(),};
         public static int[] Source = { 1, 1 };
         public static int[] Destination = { 1, 58 };
+        public static void ChoseMap(string num)
+        {
+            switch (num)
+            {
+                case "1":
+                    map = map1;
+                    break;
+                case "2":
+                    map = map2;
+                    break;
+                case "3":
+                    map = map3;
+                    break;
+                case "4":
+                    map = map4;
+                    break;
+            }
+        }
         public static void PrintMap()
         {            
             for (int i = 0; i < 21; i++)
             {
                 for (int j = 0; j < 61; j++)
                 {
-                    if (i == 20 || j == 60)
-                        Console.ForegroundColor = ConsoleColor.White;
-                    else if(i == Source[0] && j == Source[1])
+                    if (map[i][j] == '#')
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    else if(map[i][j] == 'S')
                         Console.ForegroundColor = ConsoleColor.Green;
-                    else if (i == Destination[0] && j == Destination[1])
+                    else if (map[i][j] == 'D')
                         Console.ForegroundColor = ConsoleColor.Red;
                     else
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.White;
 
 
                     Console.Write(map[i][j]);
                 }
                 Console.Write("\n");
             }
-            Console.WriteLine("\n\n");
             Console.ForegroundColor = ConsoleColor.White;
+        }
+        public static void CleanMaps()
+        {
+            for (int i = 0; i < 21; i++)
+            {
+                for (int j = 0; j < 61; j++)
+                {
+                    if (map1[i][j] == 'o' || map1[i][j] == '.' || map1[i][j] == 'S' || map1[i][j] == 'D')
+                        map1[i][j] = ' ';
+                    if (map2[i][j] == 'o' || map2[i][j] == '.' || map2[i][j] == 'S' || map2[i][j] == 'D')
+                        map2[i][j] = ' ';
+                    if (map3[i][j] == 'o' || map3[i][j] == '.' || map3[i][j] == 'S' || map3[i][j] == 'D')
+                        map3[i][j] = ' ';
+                    if (map4[i][j] == 'o' || map4[i][j] == '.' || map4[i][j] == 'S' || map4[i][j] == 'D')
+                        map4[i][j] = ' ';
+                }
+            }
         }
         public static void SetSource(int x = 1, int y = 1)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace FindRoute
 {    
@@ -10,6 +11,8 @@ namespace FindRoute
         private RouteTree Base { get; set; }
         private int x { get; set; }
         private int y { get; set; }
+        public int stackOperation { get; set; }
+        public int NodeVisited { get; set; }
         public DFS()
         {
             x = SearchBases.Source[0];
@@ -18,15 +21,21 @@ namespace FindRoute
             Base.x = x;
             Base.y = y;
             _stack = new Stack<RouteTree>();
+            stackOperation = 0;
+            NodeVisited = 0;
         }
-        public void FindWay()
+        public int FindWay()
         {
             RouteTree Node = Base;
             bool Isfinish = false;
+            bool Notfound = false;
 
-            while (!AlgorithmBase.ProblemSolved(x,y) && !Isfinish)
+            int i = 0;                       
+
+            while (!AlgorithmBase.ProblemSolved(x,y) && !Isfinish && !Notfound)
             {
-                if (SearchBases.map[x-1][y] != '#' && SearchBases.map[x - 1][y] != '.' && Node.Top == null) //top
+                NodeVisited += 4;
+                if (SearchBases.map[x-1][y] == ' ' && Node.Top == null) //top
                 {
                     x -= 1;
                     SearchBases.map[x][y] = '.';
@@ -44,7 +53,7 @@ namespace FindRoute
                     Node.x = x;
                     Node.y = y;
                 }
-                else if (SearchBases.map[x][y+1] != '#' && SearchBases.map[x][y + 1] != '.' && Node.Right == null) //right
+                else if (SearchBases.map[x][y+1] == ' ' && Node.Right == null) //right
                 {
                     y += 1;
                     SearchBases.map[x][y] = '.';
@@ -61,7 +70,7 @@ namespace FindRoute
                     Node.x = x;
                     Node.y = y;
                 }
-                else if (SearchBases.map[x+1][y] != '#' && SearchBases.map[x + 1][y] != '.' && Node.Down == null) //down
+                else if (SearchBases.map[x+1][y] == ' ' && Node.Down == null) //down
                 {
                     x += 1;
                     SearchBases.map[x][y] = '.';
@@ -78,7 +87,7 @@ namespace FindRoute
                     Node.x = x;
                     Node.y = y;
                 }
-                else if (SearchBases.map[x][y-1] != '#' && SearchBases.map[x][y - 1] != '.' && Node.Left == null) //left
+                else if (SearchBases.map[x][y-1] == ' ' && Node.Left == null) //left
                 {
                     y -= 1;
                     SearchBases.map[x][y] = '.';
@@ -97,27 +106,50 @@ namespace FindRoute
                 }
                 else
                 {
-                    if (_stack.Peek() != null)
+                    if(_stack.Count >= 1)
                     {
-                        Node = _stack.Pop();
-                        x = Node.x;
-                        y = Node.y;
+                        if (_stack.Peek() != null)
+                        {
+                            Node = _stack.Pop();
+                            x = Node.x;
+                            y = Node.y;
+                            stackOperation++;
+                        }
+                        else
+                            Isfinish = true;
                     }
                     else
-                        Isfinish = true;
+                    {
+                        Notfound = true;
+                    }
                 }
+                Thread.Sleep(20);
+                i++;
             }
-            _stack.Push(Node);
-            ShowWay();
+            if(!Notfound)
+            {
+                _stack.Push(Node);
+                stackOperation++;
+                ShowWay();
+            }
+            else
+            {
+                Console.SetCursorPosition(0, 22);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\t\t\tWAY NOT FOUND");
+            }
+            return i;
         }
         public void ShowWay()
         {
             while (_stack.Count > 1)
             {
+                NodeVisited++;
                 var Node = _stack.Pop();               
                 SearchBases.map[Node.x][Node.y] = 'o';
                 Console.SetCursorPosition(Node.y, Node.x);
                 Console.Write("o");
+                stackOperation++;
             }
         }
     }
