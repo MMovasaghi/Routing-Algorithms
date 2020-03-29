@@ -46,7 +46,7 @@ namespace FindRoute
                     _stack.Push(Node);
                     Node.Top = new RouteTree();
                     Node.IsOK = Route.top;
-                    Node.Top.PrevNode = Node;                    
+                    Node.Top.PrevNode = Node;
                     Node = Node.Top;
                     Node.Down = Node.PrevNode;
 

@@ -27,9 +27,10 @@ namespace FindRoute
             RouteTree Node = Base;
             _queue.Enqueue(Node);
 
-            int i = 0;            
+            int i = 0;
+            bool Isfinish = false;
 
-            while (!AlgorithmBase.ProblemSolved(Node.x, Node.y) && _queue.Count >= 0)
+            while (!AlgorithmBase.ProblemSolved(Node.x, Node.y) && _queue.Count >= 0 && !Isfinish)
             {
                 NodeVisited += 4;
                 if (SearchBases.map[Node.x - 1][Node.y] == ' ' && Node.Top == null) //top
@@ -92,7 +93,14 @@ namespace FindRoute
 
                     _queue.Enqueue(Node.Left);
                 }
-                Node = _queue.Dequeue();
+                if(_queue.Count > 0)
+                {
+                    Node = _queue.Dequeue();
+                }
+                else
+                {
+                    Isfinish = true;
+                }
                 queueOperation++;
                 Thread.Sleep(20);
                 i++;

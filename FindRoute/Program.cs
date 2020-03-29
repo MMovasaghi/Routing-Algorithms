@@ -112,7 +112,7 @@ namespace FindRoute
                     Console.SetCursorPosition(0, 23);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($">> Time: {time} ms");
-                    Console.WriteLine($">> Stack Operation: {bFS.queueOperation}");
+                    Console.WriteLine($">> Queue Operation: {bFS.queueOperation}");
                     Console.WriteLine($">> Node Visit: {bFS.NodeVisited}");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("\nPress any key to go back to menu...");
